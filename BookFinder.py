@@ -32,7 +32,7 @@ def search(query):
     count = 1
     for item in items:
         mapper[str(count)] = item["id"]
-        click.echo(str(str(count)+" "+item["volumeInfo"]["title"]))
+        click.echo((str(count)+" "+item["volumeInfo"]["title"]))
         
         count+=1
         
@@ -41,18 +41,17 @@ def search(query):
     url_format = 'https://www.googleapis.com/books/v1/volumes/{}'
    
     response = requests.get(url_format.format(mapper[option]))
+    
+    metadata = ["previewLink","subtitle","description","authors","publishedDate"]
     dic= response.json()["volumeInfo"]
-    link =dic["previewLink"]
-    title = dic["subtitle"]
-    desc = dic["description"]
+    for info in metadata:
+        
+        if info in dic.keys():
+            click.echo(info)
+            click.echo(dic[info])
+            click.echo()
+            
     
-    click.echo("About")
-    click.echo(title)
-    click.echo("Description")
-    click.echo(desc)
-    click.echo("Open the link to preview the book")
-    click.echo(link)
-    
-    
+
 if __name__ == "__main__":
     main()
